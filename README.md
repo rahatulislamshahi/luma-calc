@@ -1,80 +1,225 @@
-# Luma Calc 1.0.1
+# Luma Calc
 
-Flutter 3.35.5 ও Dart 3.9.2 দিয়ে তৈরি Android scientific calculator। Target IDE: Android Studio 2025.1.5।
+An offline scientific calculator for Android, built with Flutter and Dart.
 
-## Android Studio-তে চালাও
+Luma Calc features a glass-inspired interface, standard and scientific modes, local calculation history, and memory controls.
 
-1. ZIP extract করে `luma_calc` folder রাখো, যেমন `C:\Projects\luma_calc`।
-2. Android Studio-তে Flutter ও Dart plugins enabled রাখো। Flutter SDK path-এ তোমার Flutter 3.35.5 folder select করো।
-3. SDK Manager থেকে Android SDK Platform 36, Build-Tools 35.0.0, Platform-Tools, NDK 27.0.12077973 এবং CMake 3.22.1 install করো। SDK Tools-এ Show Package Details চালু করলে নির্দিষ্ট versions পাওয়া যায়। Gradle প্রয়োজন হলে NDK/CMake নিজেও download করবে। Android SDK licences accepted থাকতে হবে।
-4. Android Studio → Open → `luma_calc` folder select করো। Root folder-এ `pubspec.yaml` থাকবে।
-5. Terminal-এ চালাও:
+## Features
 
-```sh
-flutter --version
-flutter doctor
+- Standard and scientific calculator modes
+- Degree and radian angle units
+- Trigonometric and inverse trigonometric functions
+- Natural and base-10 logarithms
+- Exponential functions, powers, square roots, and cube roots
+- Factorial, percentage, reciprocal, and absolute value
+- Memory controls: MC, MR, M+, and M−
+- Previous-answer recall using Ans
+- Editable expressions and clipboard support
+- Up to 100 locally saved calculations
+- Dark and light themes
+- Portrait and landscape layouts
+- Optional touch feedback
+- Keyboard shortcuts and screen-reader actions
+
+## Requirements
+
+- Flutter 3.35.5 with Dart 3.9.2
+- Android Studio with the Flutter and Dart plugins
+- JDK 17 or 21
+- Android SDK Platform 36
+- Android SDK Build-Tools 35.0.0
+- Android SDK Platform-Tools
+- Android NDK 27.0.12077973
+- CMake 3.22.1
+
+Minimum supported Android version: Android 7.0, API 24.
+
+An internet connection is required for the initial dependency downloads and build. The calculator works offline.
+
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/rahatulislamshahi/luma-calc.git
+cd luma-calc
+```
+
+Install dependencies:
+
+```bash
 flutter pub get
+```
+
+Check your development environment:
+
+```bash
+flutter doctor
+```
+
+Connect an Android device or start an emulator, then run:
+
+```bash
 flutter run
 ```
 
-JDK 17 অথবা 21 ব্যবহার করো। Android Studio-এর bundled JDK 21 ব্যবহার করা যায়। প্রথম Gradle sync ও build-এর জন্য internet লাগবে। App চালাতে internet লাগে না। কোনো machine-specific SDK path ZIP-এ নেই; Flutter তোমার computer অনুযায়ী `android/local.properties` তৈরি করবে।
+For Android Studio, open the repository folder containing `pubspec.yaml` and select your Flutter SDK.
 
-## APK build
+## Build an APK
 
-```sh
+Build a release APK:
+
+```bash
 flutter build apk --release
 ```
 
-APK: `build/app/outputs/flutter-apk/app-release.apk`
+The APK will be available at:
 
-এই universal APK-তে `armeabi-v7a`, `arm64-v8a` ও `x86_64` architectures থাকে। ছোট আলাদা APK চাইলে:
+```text
+build/app/outputs/flutter-apk/app-release.apk
+```
 
-```sh
+To build separate APKs for each supported architecture:
+
+```bash
 flutter build apk --release --split-per-abi
 ```
 
-Minimum Android: 7.0 / API 24। Flutter 3.35.5-এর minimum version অনুযায়ী পুরোনো Android 5/6 বা 32-bit x86 phones supported নয়। Supported device-এও সব manufacturer ও OS combination বাস্তবে পরীক্ষা করা হয়নি।
+Supported architectures:
 
-Default release build স্থানীয় installation-এর জন্য debug key দিয়ে signed হয়। Play Store-এ publish করার আগে নিজের release keystore তৈরি করে `android/key.properties` দাও:
+- armeabi-v7a
+- arm64-v8a
+- x86_64
+
+## Release Signing
+
+Without a custom signing configuration, release builds use the debug signing key for local installation.
+
+Before publishing the app, create your own release keystore and add an `android/key.properties` file:
 
 ```properties
-storePassword=your_store_password
-keyPassword=your_key_password
-keyAlias=your_alias
+storePassword=YOUR_STORE_PASSWORD
+keyPassword=YOUR_KEY_PASSWORD
+keyAlias=YOUR_KEY_ALIAS
 storeFile=C:/Keys/luma-release.jks
 ```
 
-নিজের values ব্যবহার করো। Private keystore বা passwords ZIP-এ দেওয়া হয়নি। `key.properties` থাকলে build configuration সেই release key ব্যবহার করে।
+Replace the placeholders with your own values.
 
-## ব্যবহার
+Keep signing passwords, keystores, and `key.properties` out of version control.
 
-- Standard ও Scientific mode, DEG/RAD, dark/light theme এবং touch feedback।
-- Scientific mode-এ `2nd` থেকে inverse trigonometry, cube root, eˣ, 10ˣ ও absolute value।
-- `200 + 10% = 220`, `200 − 10% = 180`, `200 × 10% = 20`।
-- Open parentheses `=` চাপলে close হয়। Expression-এ tap করে সরাসরি edit করা যায়। Copy/paste buttons display-এর ওপরে।
-- `±` শেষ value-এর sign বদলায়। Trigonometric/log/root buttons শেষ value-কে function-এর মধ্যে রাখে; input খালি থাকলে নতুন function শুরু করে। `x²`, `x³`, `1/x` ও `|x|` পুরো current expression-এর ওপর কাজ করে। নির্দিষ্ট অংশে operation চাইলে parentheses বা expression editor ব্যবহার করো।
-- Paste-এ `*`, `/`, uppercase function, `PI`, `√`, `∛` ও `²`/`³` ব্যবহার করা যায়। Decimal-এর জন্য `.` ব্যবহার করো; `1,234.5`-এর মতো হাজারের grouping গ্রহণ করা হয়, `1,5`-এর মতো decimal comma গ্রহণ করা হয় না।
-- `M+`/`M−` বর্তমান value memory-তে যোগ/বিয়োগ করে; `MR` recall ও `MC` clear করে।
-- সর্বশেষ 100টি calculation, memory, unfinished expression, angle unit ও settings app বন্ধ করেও থাকে। App data clear বা uninstall করলে মুছে যাবে।
-- Very small screens ও বড় font-এ প্রয়োজন হলে scroll করো। Landscape-এ function panel ও number keypad আলাদা scroll হয়; short landscape-এ number keypad পাঁচ column-এ থাকে। History/settings এবং keyboard খোলা অবস্থায় expression editor-ও scroll করা যায়।
-- Enter: calculate; Backspace: delete; Esc: clear; Ctrl/Cmd+C: copy; Ctrl/Cmd+V: paste।
-- Calculations use Dart double precision; display shows up to 12 significant digits। App real numbers নিয়ে কাজ করে; complex-number results supported নয়।
+## Usage
 
-## Project checks
+### Scientific Functions
 
-```sh
+Switch to Scientific mode to access additional functions.
+
+Tap `2nd` to switch between regular and inverse functions, including inverse trigonometry, cube roots, exponential functions, and absolute value.
+
+Function buttons apply to the last operand. To calculate the sine of an entire expression such as π/2, enter `sin(π/2)` in the expression editor, or enter `(π/2)` before pressing `sin`.
+
+The square, cube, reciprocal, and absolute-value tools apply to the entire current expression. The sign button changes the last operand's sign.
+
+Open parentheses are automatically closed when you press equals.
+
+### Percentages
+
+```text
+200 + 10% = 220
+200 − 10% = 180
+200 × 10% = 20
+200 ÷ 10% = 2000
+```
+
+### Memory
+
+- `M+` adds the current value to memory.
+- `M−` subtracts the current value from memory.
+- `MR` recalls the stored value.
+- `MC` clears memory.
+
+### Expression Editing
+
+Tap the expression or the edit icon to modify a calculation.
+
+Pasted expressions support ASCII operators, uppercase function names, PI, root symbols, and superscript squares and cubes.
+
+Use a period for decimals. Grouped thousands such as `1,234.5` are accepted. Decimal commas such as `1,5` are not supported.
+
+Hold the delete button to clear the current calculation.
+
+### History and Storage
+
+The app stores up to 100 calculations locally, together with memory, the unfinished expression, the previous answer, and supported settings.
+
+Clearing app data or uninstalling the app removes this information.
+
+### Smaller Screens
+
+Scroll when needed on smaller screens or with larger system fonts.
+
+In landscape mode, the function panel and number keypad scroll independently. Short landscape layouts use a five-column number keypad.
+
+History, settings, and the expression editor also support scrolling.
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+| --- | --- |
+| Enter | Calculate |
+| Backspace | Delete the last character |
+| Escape | Clear the calculation |
+| Ctrl/Cmd+C | Copy the current result or expression |
+| Ctrl/Cmd+V | Paste an expression |
+
+## Validation
+
+Run static analysis:
+
+```bash
 flutter analyze
+```
+
+Run the automated tests:
+
+```bash
 flutter test
 ```
 
-এই revision-এ Flutter 3.35.5 / Dart 3.9.2 দিয়ে analyzer issue ছাড়া এবং 390টি automated test পাস হয়েছে। Automated coverage-এ calculation engine, sign entry, pasted operators, functions, decimal/thousands separators, factorial roundoff, memory, history ও state restoration আছে।
+The provided version passed 390 automated tests and static analysis with no issues using Flutter 3.35.5 and Dart 3.9.2.
 
-প্রতিটি exposed function-এর button wiring আলাদাভাবে পরীক্ষা করা হয়েছে। `test/all_functions_test.dart`-এ 54টি অতিরিক্ত test আছে: সাধারণ/inverse trig DEG ও RAD-এ, ln/log, eˣ/10ˣ, square/cube/root, reciprocal/absolute value, factorial, percentage/sign, সব digits/operators, power/parentheses/constants/Ans, memory, delete/held delete, clipboard, history edit/copy/clear এবং settings feedback। Domain error ও overflow inputs-এ ভুল result save না করে error দেখানো হয় কি না-ও পরীক্ষা করা হয়েছে। Function buttons শেষ operand-এ কাজ করে; যেমন পুরো π/2-এর sine চাইলে `sin(π/2)` লিখো অথবা `(π/2)`-কে brackets দিয়ে তারপর sin চাপো।
+Test coverage includes:
 
-Responsive tests-এ 240×480, 280×360, 320×568, 360×640, 390×844, 412×915, 480×800, 520×280, 568×320, 640×360, 740×360, 915×412, 600×960, 673×841, 840×1180 এবং 1280×800 logical pixel sizes রাখা হয়েছে। প্রতিটিতে Standard/Scientific mode, dark/light theme এবং 1×/2×/3× text scale পরীক্ষা করা হয়। Tests keypad দিয়ে calculation করে ও calculator-key touch targets কমপক্ষে 48×48 logical pixels কি না দেখে। Short landscape-এ panel/editor flow, keyboard/safe-area insets, screen rotation, 3× pixel density এবং screen-reader tap action-এর checks-ও আছে।
+- Calculation accuracy and operator precedence
+- Scientific and inverse-function button actions
+- Degree and radian calculations
+- Invalid inputs and numeric limits
+- Negative-number entry and pasted expressions
+- Memory, history, and state restoration
+- Clipboard actions and expression editing
+- Responsive layouts across 16 screen sizes
+- Standard and scientific modes in both themes
+- Text scaling at 1×, 2×, and 3×
+- Keyboard insets, safe areas, and screen rotation
+- Calculator-key touch targets and screen-reader tap actions
 
-Release APK build সফল হয়েছে এবং APK signature যাচাই করা হয়েছে: version 1.0.1+2, min SDK 24, target/compile SDK 36, arm64-v8a/armeabi-v7a/x86_64। Build environment: JDK 17, Gradle 8.12, AGP 8.9.1 ও Kotlin 2.1.0।
+Portrait, landscape, scientific, and light/dark interfaces were also rendered for visual inspection.
 
-Dark/light portrait, scientific এবং landscape UI Flutter থেকে render করে দেখা হয়েছে। Physical Android phone বা Android Studio GUI-তে পরীক্ষা করা হয়নি; সব device/OS combination-এ শতভাগ bug-free হওয়ার নিশ্চয়তা এই checks দেয় না।
+A release APK was built and its signature verified using JDK 17, Gradle 8.12, Android Gradle Plugin 8.9.1, Kotlin 2.1.0, and Android SDK 36.
 
-Source code-এ comments নেই। শুধু Android project রাখা হয়েছে; SDK, IDE cache, build output ও APK project ZIP-এর অংশ নয়।
+Physical-device testing and Android Studio GUI testing were not performed. Automated checks do not guarantee identical behavior on every device.
+
+## Numeric Precision
+
+Calculations use Dart double-precision floating-point numbers. Displayed results use up to 12 significant digits.
+
+The calculator supports real-number calculations. Complex-number results are not supported.
+
+## Project Structure
+
+```text
+android/    Android configuration, native storage, and app icons
+lib/core/   Calculation engine, controller, and storage interface
+lib/ui/     Calculator interface and reusable widgets
+test/       Automated calculation, interaction, and layout tests
+```
