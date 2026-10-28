@@ -1,0 +1,19 @@
+name: luma_calc
+description: A thoughtful scientific calculator for Android.
+publish_to: none
+version: 1.0.1+2
+
+environment:
+  sdk: '>=3.9.2 <4.0.0'
+  flutter: '>=3.35.5'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
